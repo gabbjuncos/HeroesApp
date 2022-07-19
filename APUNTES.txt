@@ -11,3 +11,130 @@ git config --global --list
 
 ___________________________
 
+lazyload - carga peresoza
+y ser capaces de manjar rutas hijas cargadas con lazyload
+
+ng new heroesApp
+
+estricto para que muestre todos los posibles errores
+
+y rooting darle que no 
+
+material.angular.io
+
+guides
+started
+
+para installar ng add @angular/material
+cuando se instala se puede elegit el tema
+
+y va preguntando valores de configuracion para instalar las cosas de manera global
+
+sino se le agrega el --skip-confirmation
+para no elegir nada 
+
+_________________
+
+SE GENERA UN MODULO LLAMADO AUTH
+
+ng g m auth
+
+y crea una carpeta con el modulo
+
+otro modulo llamado heroes
+
+en auth se va adesarrollar una autenticacion sencilla para proteccion de rutas
+
+ng g m heroes
+donde tendremos la app de heroes despues de una autenticacion
+
+otro modulo llamado 
+
+ng g m material
+para tener todo centralizado las importaciones de material ahi , todo lo que vayamos a usar de esa libreria
+los importamos de ese modulo
+
+y vamos a tner pages en auth y en heroes 
+se agregan esas carpetas manualmente
+
+generar componente login para auth
+
+ng g c auth/pages/login --skipTests para crearlo sin el archivo de pruebas
+
+
+y actualiza directamente en modulo de auth
+
+tambien uno para la pagina register
+ng g c auth/pages/register
+
+
+en heroes se crea un componente para agregar heroes
+
+ng g c heroes/pages/agregar
+
+y otro para buscar, donde va hacer la busqueda con autocomplete
+
+ng g c heroes/pages/buscar
+otro para heroe que va  serviar para ver un heroe en particular
+ng g c heroes/pages/heroe
+
+y otro para home, que se va a usar como una pagina principal
+
+ng g c heroes/pages/home
+
+y otro mas para listado , para mostrar todos los heroes que tengamos en la base de datos
+
+en el heroes module vo a tener todas las importanciones
+
+pero no vamos a exportar estos componentes fuera de algun lugar
+por ser una carga perezoza, no vamos a importar nada que no haga falta
+
+
+se queire hacer una pagina de error para cuando la url no sea igual a alguna de las definidas
+
+se crea la carpeta shared en app 
+y ahi se va a crear el componente error
+
+ng g c shared/errorPage
+
+y este componente error se lo pasa al html del app para mostrar 
+
+______________
+
+el app component se debe mostrar de forma condicional dependiendo la ruta 
+
+aveces la rutas principles se colocan al mismo nivel donde se encuentra el archivo module 
+o se sabe crear una carpeta root 
+
+para este ejemplo se va a crear a la misma altura del app moduel
+
+ng g m appRouting --flat , para que no cree una carpeta el flat
+
+solamente este archivo va a contener las rutas
+
+y voy a poder usar los componentes porque estan de manera global en el app module
+
+y con el 404 va aser para el error 
+
+y para el ** que seria para cualqueir url que no corresponda a las definidas
+
+si en el app module tuviera todas las paginas, no podria hacer le lazyload
+porque estaria definiendo todas
+
+en el aap routing module 
+se importa el routerModule.forRoot (routes)
+porque es para las rutas principales
+
+y se exporta el routerModule
+
+y hay que decirle al app module que dispone de ese moduelo en el imports
+se agrega el app routing module
+
+y se agrega la etiquea routerOutlet 
+y le dice a angular que haga match con las rutas que se definieron y renderiza esos componentes
+
+y en el path para el ** que redirja a la 404
+con redirectTo
+
+
+
