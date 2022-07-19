@@ -1,0 +1,13 @@
+history -c command
+
+git config --global user.name "Tu nombre"
+git config --global user.email "Tu correo"
+
+para cerrar sesion
+git config --global --unset user.email "colocar email"
+
+git config --global --list
+
+
+___________________________
+
