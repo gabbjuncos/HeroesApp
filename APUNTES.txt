@@ -136,5 +136,321 @@ y le dice a angular que haga match con las rutas que se definieron y renderiza e
 y en el path para el ** que redirja a la 404
 con redirectTo
 
+______________________________________
+
+lazy load y rutas hijas AuthRoutes
+
+se crea un module para las cargas peresozas al mismo nivel que el auth module
+
+ng g m auth/authRouting --flat
+
+en el archivo auth-routing voy a tener fragmento de las url
+
+si no es login y no es registro , redirige a login
+
+y ahi vamos a llamar a los componentes de las paginas con el que quiero hacer el lazyload
+
+y en el ng module declaramos el routermodule.child
+no se usa el for root , el for rooot es solo para la principal
+y vamos a tener una sola por aplicacion 
+
+son for child porque va a ser por carga peresoza
+
+y se exporta el RouterModule 
+
+con la configuracion de las rutas hijas
+
+el auth router module va a ser parte del auth module
+
+todo lo que conoce angular es lo que esta en app module
+para que sea parte de la aplicacion
+
+lo que se va a hacer es que cuando alguien ingrese a alguna ruta 
+angular cargue esa ruta
+
+y en el app routing module se definen las rutas
+y para la ruta 'auth' se va a utilizar para 
+colocar todo el modulo de autenticacion
+
+para cuando se ingrese a la ruta 'auth'
+se va a cargar el modulo con loadChildren usando una funcion de flecha
+se dice que cargue el modulo que es auth.module y como es una promesa hay que resolver despues que
+se hace, y seria que se cargue el respectivo modulo
+
+m que estaria nombrando el modulo y se dice que cargue el AuthModule
+
+seria cuando alguien entra al path auth, que se carguen sus hijos y esos hijos van a venir del
+producto del auth.module y cuando se cargue, el modulo que va a regresar es el authmodule
+
+y en el navegador se puede ver en network como se van cargando las url
+
+_______________________
+
+tarea 
+
+https://gist.github.com/Klerith/c72ea2d4192567cb42a0f62e5d271724
+
+crear modulo para routing heroes
+
+ng g m heroes/heroesRouting --flat
+
+SE HACE LO MISM PARA LOS PATH HEROES
+
+se agregan los pat en heroes routing y se lo exporta
+
+y luego se lo importa en el heroes module
 
 
+ahora para terminar de configurar el lazy load
+
+se le agrega al heroes routing el componente home luego del path ''
+y antes del childre
+
+
+en el app component html 
+se tiene que poner 
+<router-outlet> para que ande el lazy load
+
+en resumen 
+
+en general se crea un archivo app routing donde ahi van a estar la rutas principales
+la de error 404
+la **
+y las rutas asociadas a al componente en general usando loadchilden
+
+luego en cada ruta que contenga rutas hijas
+se crear un archivo general con su modulo y luego un modulo routin con todoas sus rutas asocaiadas
+
+app-routing.module(rutas principales)   - auth.module (general para las rutas de auth) - auth-routing-module (todas rutas para auth importando forChild) 
+		   			- heroes.module (general para las rutas de heroes) - heroes.routing-module (todas las rutas para heroes importando forChild)
+
+en el app.component.html va el router-oulet nomas para que funcione
+
+_____________________
+
+ANGULAR FLEX
+- PARA QUE LA PANTALLA SE ADAPTE A LAS DISTINTAS RESOLUCIONES
+- APP CON BUSCADOR CON AYUDA 
+
+para installar angular flex
+
+https://www.npmjs.com/package/@angular/flex-layout
+
+recomienda usar angular flex para controlar como se ven las grilas
+se tiene mas control de la forma como ve que angular material
+
+componente grid list de angular
+
+npm i @angular/flex-layout
+
+solo en los heroes se va a usar 
+
+asi que se va a importar en el modulo de heroes
+
+y se importa flexlayoutModule
+
+y se lo agrega a la lista importada
+
+FlexLayoutModule
+
+____________________
+
+material sidenav, toolbar e iconos
+
+sidenav angular material    FlexLayoutModule,
+
+en api refernce se ve la importacion como usarlo
+
+todo lo que sea de angular material lo voy a importar en material module
+
+import {MatSidenavModule} from '@angular/material/sidenav';
+
+y lo exporto para que cualquier otro componente lo pueda usar
+
+y al module material lo importo en el heroes module en el import
+de esta manera todo lo importado en el material module tambien va a ser parte del module de heroes
+
+agregamos los componentes 
+
+mat-drawer-container y mat-sidenav
+
+y hay que importar el componente toolbar tambien al material module
+
+import {MatToolbarModule} from '@angular/material/toolbar';
+
+MatToolbarModule
+
+y tengo que importar el material module en el moduelo de heroes module
+
+para que sea parte de este modulo
+
+se agrega un boton 
+import {MatButtonModule} from '@angular/material/button';
+
+y se agrega la propiedad mat-button
+
+para usar el icon tengo que importar tambien el componente de mat en module
+
+para ver los iconos que hay para usar de material
+
+https://developers.google.com/fonts/docs/material_icons
+
+https://fonts.google.com/icons
+
+y nomas necesitamos el nombre del icono
+
+luego de hacerle click al boton
+hay que llamar a la funcion sidenav. y tiene muchos metodos y seria el toggle() para llamar 
+para que se expanda el menu
+
+PARA QUE SE OCULTE CUANDO SE HACE CLICK AFUERA
+
+la etique a usar es el mat-sidenav-container
+
+y para que se vea el efecto que el boton lo empuja se agrega mode="push"
+
+el ancho del sidebar lo determina el contenido por defecto
+
+ahora para agregar el listado de menus
+en el material ver ese componente e importarlo en el module material
+
+se usa el selector mat-nav-list
+en el html home
+
+mat-nav-list
+
+y usa otro forma para hacer la redireccion de los links
+no como se usa en el amaterial de ejemplo
+
+usa link y en routerlink le pasa la url , se coloca ./listado porque ya 
+estamos en la rutas de heroes
+
+y se coloca el router-outlet antes que se cierre el contariner
+
+y para que se vea mejor se le aplica el atributo mat-list-item para transformarlo en un list items
+y queda con el efecto de material
+
+se agrega el click (click)="sidenav.toggle()" en las opciones del menu para 
+que se cierre cuando se hace click en la opcion del menu
+
+luego se agrega todos las opciones del menu en el mat-nav-list
+
+y se agrega el mat-icon para que tenga un icono
+
+y al mat-icon se le puede agregar el selecctor mat-list-icon para que se acomode el pading
+la separacion 
+
+ahora se crea una clase container 
+y se la asigna en un div para que el componente mostrado tenga un margen 
+
+y se define la clase en el styles del home 
+
+en el toolbar que tiene el boton de menu
+se le agrega un boton y se le agrega la propiedad mat-button
+
+para que el boton logout figure en la derecha se lo hace con flex
+
+se agrega en el css la clase 
+.spacer {
+	flex: 1 1 auto;	
+}
+
+esto va hacer que el spacer tome todo el espacio que queda restante y que empuje todo a los bordes
+se agre en la clase css general styles.css
+
+y se agrega un span en el html home que va a tener solamente la clase spacer
+
+inmediatamente arriba del boton logout
+
+esa clase da el efecto que el boton se vaya a la derecha y el efecto de que se oculta cuando se hace 
+click al menu
+
+se agrega el span tambien para el boton dentro del menu
+para que ese boton se vaya la derecha del ancho del toolbar del menu
+
+despues de la palabra menu
+
+____________
+APLICACION DE CRUD
+CREATE 
+READ
+UPDATE
+DELETE
+
+post
+put
+get
+delete
+
+usadas para aplicaciones en el front end 
+
+para hacer un server json local para probar el backend
+
+se unsa la libreria
+
+npmjs.com/package/json-server
+
+para installar en window  y abrir consola como administrador
+npm install -g json-server se instala de manera global
+
+los datos que vamos a usar
+
+gist.github.com/Klerith/403c91e61d3c87284beb0dd138619958
+
+hay que posicionarse en la carpeta donde este el json
+y se ejecuta 
+json-server --watch db.json
+para levantar el servidor
+con los datos del json
+
+
+se necesita imagenes
+en una carpeta llamada heroes poner todas las imagenes de heroes
+y tener aparte una imagen para perfil no-image
+
+y agregarlas a la carpeta assets del proyecto angular
+
+________________________
+
+HOTEL SERVICE - TRAER INFORMACION DE LOS HEROES
+
+hay que  centralizar las peticiones del backend hacia los heroes
+
+en heroes se crea una carpeta services
+
+y ahi vamos a tener el service que va a ser el encargado de hacer la peticiones al servidor
+
+ng g s heroes/services/heroes
+
+el archiv service significa que esa de manera gloabal
+  providedIn: 'root' 
+
+y  esta bien 
+
+como necesito trabajr con peticiones http, tengo que importar el modulo y como el servicio va a estar
+de manera globarl
+
+se lo coloca de manera global en el app.module
+porque los ervicios estan de manera global y necesitan ese servicio
+e importamos el modulo HttpClientModule
+
+import {HttpClientModule} from '@angular/common/http'
+
+y lo colocamos en imports
+
+y en el constructor del herores services de lo agrega, del tipo HttpClien
+y lo importamos desde angular common http
+
+se define el metodo get
+que devuelve un obj del tipo observable
+
+y se lo va a consumar en el componente listado de heroes
+asi que se lo agrega en el constrcutor al obj del  tipo heroesService
+
+y tendria a disposicion todos los metodos y propiedades queel heroes service tenga 
+
+
+y lo llamamos en el ngOninit
+y para que se dispares le agregamos el suscribe a la respuesta del mismo
+
+y obtengo los 20 heroes
