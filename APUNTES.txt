@@ -412,7 +412,7 @@ y agregarlas a la carpeta assets del proyecto angular
 
 ________________________
 
-HOTEL SERVICE - TRAER INFORMACION DE LOS HEROES
+HOROES SERVICE - TRAER INFORMACION DE LOS HEROES
 
 hay que  centralizar las peticiones del backend hacia los heroes
 
@@ -454,3 +454,198 @@ y lo llamamos en el ngOninit
 y para que se dispares le agregamos el suscribe a la respuesta del mismo
 
 y obtengo los 20 heroes
+
+__________
+
+CREAR LA INTERFAZ HEROE
+
+con esta pagina nos genera la clase de manera facil para hacer la interfaz
+
+app.quicktype.io
+
+se tiene que crear la interfaz porque type scritp no tiene manera de saber de que tipo es
+y al hacerlo tendriamos el tipo del objeto que estamos obteniendo de la promesa y no any
+
+para que se puede levantar el servidor json local hay que estar en la caperta donde esta el archivo
+
+y se ejecuta
+
+json-server --watch db.json
+
+se copia y pega la respuesta
+
+y se eligie del lado derecho en type script y se tilda en interfaz only y en verify json.parse results at runtime
+
+luego copiamos lo que tira y lo pegamos en un archivo llamado heroes.interface.ts
+le cambiamos el nombre a la interface y la llamaos Heroe
+
+y como puede ser que en ocacioes no sepamos el id por ejmplo, cuando estemeos creadngo un nuevo heroe no tengamos el id 
+
+lo dejamos en opcional 
+id?: string;
+
+y tambien se le agrega un atributi llamado alt_img? opcional del tipo string que va a tener una direccion
+url de la imagen por el momento no se realiza la carga de archivos
+
+y se agrega el el service en el metodo get el tipo que se recibie y como aca se obtiene todos
+se lo coloca con una lista de tipo Heroe 
+
+se modifica el listado component para utilizar la interfaz
+
+y ya puedo ver los datos del heroe por la interaz
+
+se muestra un listado de los nombres de los heroes a patir de la respuesta get
+
+____________________
+
+MATERIAL CARD - FLEX LAYOUT
+
+en angular material ver el componente CARD
+
+se importa 
+
+import {MatCardModule} from '@angular/material/card';
+en el material module  
+
+ya lo tendriamos disponible para cualquier componente que utilice este modulo 
+
+se agrega al htlm el componente mat-divider
+
+salto de linea break line <br>
+
+en la doc esta como implemetar una lista de tarjetas con la info de cada superheroe
+
+al agregar la imagen por url y agregarla la propiedad mat-image, hace que la imagen sea responsive 
+y se adapte a la pantalla
+
+luego se agrega la propiedad mat-card-content para mostrar un contenido de la tarjeta 
+
+el strong es para negrita
+
+la propiedad mat-card-actions es un espacio reservado para colocar botones
+
+para modificar el tamaño de las imagenes
+
+usando angular flex , la propiedad fxLayout="row"
+le estor diciendo que todo lo que esta en el div se muestre como row y las coloca a todas las card en una sola fila 
+pero se salen los bordes
+
+se agrega la propiedad wrap para decirle que si se  completa la imagen salte a la fiquiete fila para mostrarla
+pero sigue estando feo
+
+para decirle que tan grande quiero las tarjetas
+para este caso que ocupe un 20 % DEL 100 QUE TENEMOS DISPONIBLE DE LA PANTALLA EN EL NAVEGADOR
+
+______________________________
+
+FLEX LAYOUT - DIFERENTES RESOLUCIONES
+
+primera solucion es agregar el ngfor en el dif flex
+
+entonces si le agrego en el fxFlex 50, mostraria 2 , si le agrego 30 mostraria 3 pero
+quedaria un espacio sin usar y se ve feo 
+
+al agregar la propiedad fxLayoutAlign para centrar por ejemplo las div hijas
+se veria centrado todas 
+
+para agregar un separacion
+se usa la propiedad fxLayoutGap = "20px"
+
+y para agregar un margin
+lo hace en el compoentn ts listado 
+en styles 
+un margin top de 20 px
+para una separacion de arriba y abajo
+
+y puedo controlar la cantidad de imagenes que se ven 
+con la propiedad flex para pantalla grandes que tomen un 15 porciento de la pantalla disponible
+
+ahora cuando la pantalla es muy grande se ve bien
+pero ahora cuando la pantalla es muy pequeña
+se puede controlar para usar un 30 % para mostrat imagenes cuando la pantalla es pequeña
+y dejar por defecto que se use un 20 % para mostrar 
+
+pero se sigue viendo mal cuando la pantalla es muy pequeña
+se podria usar la propiedad fxLayout.xs="column para el div de row 
+para cuando la pantalla es demasiada pequeña se mira solo una columna
+
+____________
+
+TARJETA HEROTARJETACOMPONENT
+
+se crea ese componente y se coloca ahi todo lo realcionado al mat-card
+
+se pega todo el mat-card en el html heroe-tarjet.component
+
+y se agrega a su ts la propiedad heroe con @Input
+le agrego el signo de admiracion a la propiedad para indicar a typescript que siempre va a tener un heroe
+heroe!
+
+o sino indicar que puede ser Heroe | undefined
+
+y en el listado components.html
+
+se agrega la llamada al componente pasandole el input
+
+en el recorrido le pasa como parametro cada uno de los heoroes por vez a nuevo componente tarjeta
+<app-heroe-tarjeta [heroe]="heroe"><app-heroe-tarjeta >
+con el [heroe] le indico el valor que toma esa propiedad 
+
+______________
+
+PIPEIMAGEN
+para que un pipe que reciba un objeto se encargue de actualizar la imagen en tiempo real
+
+el pipe lo que deberia hacer, es recibir el heroe y al llamar imagen devolver la ruta de la imagen
+el src
+
+y tiene que estar en la carpeta pipe , porque en heroes/pipes estan todos los pipes relacionados a heroes
+
+se debe utilizar como "heroe | imagen"
+
+ng g pipe heroes/pipes/imagen
+
+y en la tarjeta heoroe
+se llama ahora a la imagen como <img mat-card-image [src] = "heroe | imagen">
+
+y con el pipe tiene que retornar la path de la imagen
+
+`assets/heroes/${heroe.id}.jpg`
+
+la funcion tranforma solo recibie al obj heroe y devuelve el string con la path
+
+__________________
+
+ruta heroe y editar heroe
+
+la idea es que con el boton editar muestre los datos del heroe para editar y la de consultar al heroe
+con el leer mas
+usando la ruta del routing heroes-routing.module
+
+http://localhost:4200/heroes/editar/dc-batman
+
+{
+        path: 'editar/:id',
+        component: AgregarComponent,
+      },
+
+
+
+http://localhost:4200/heroes/dc-batman
+
+path: ':id',
+component: HeroeComponent
+
+es armar la ruta con la que voy a acceder en el navegador miro como quedaria ahi 
+
+ahora del lado del heroe component necesito inyetar algo para poder leerlo
+al obj heroe enviado
+
+se inyecta el activateRoute
+
+y en l ngOninit se lo llama y se aplica el parms y el suscribe porque es un observable y la url puede
+cambiar
+
+y se usa desestructuracin para mostrar solo el id
+
+
