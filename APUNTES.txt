@@ -8,6 +8,9 @@ git config --global --unset user.email "colocar email"
 
 git config --global --list
 
+ir a la carpeta donde esta el .json con los datos para levantar el server local
+
+json-server --watch db.json
 
 ___________________________
 
@@ -648,4 +651,146 @@ cambiar
 
 y se usa desestructuracin para mostrar solo el id
 
+
+__________________________
+
+PANTALLA DE HEROE
+
+para el caso de la url ../heroes/dc-batman
+
+para que muestre los datos correspondiente y valida cuando se ingresa otros valores en la url
+se va a utilizar el componente grid de material 
+lo utilzia para para centrar las cosas
+
+el componente listado tambien se va a utilizar y el spiner para la espera de la carga
+
+Progress spinner
+
+recomendado utilizar el infinito indeterminate poque no se saba cuanto va a tardar la carga
+importar el componente spinner en el material module y se lo exporta para que lo usen lo demas modulos de la app
+
+y el de grilla tambien
+
+se los va a utilizar en el componente de heroe ts
+
+mat-grid-list
+por defecto se usa la cantidad de columnas por defecto
+
+y va a aparecer centrado
+
+y se agrega el componente spinner 
+mat-spinner
+
+
+cuando el spinner tenga la solucion
+se deberia mostrar el contenido
+
+se agrega un ngif en el grid lista para que se muestre el spiner en caso que el hero no exista !heroe
+y en caso contrario se muestra el div correspondien divHeroe
+
+se crea un ng-template con la referencia #divHeroe
+
+al crear la propiedad heroe en el ts hay que crearlo sin valor
+pero hay que ponerle el ! para que type script no deje
+
+y hay que hacer un metodo en el service 
+getHeroePorId que devuelva un observable para hacer la consulta
+
+en el metodo getHeroePorId para que se pase como parametro el valor id y se arme la url
+se hace con ``
+
+en el lado del componente heroe ts
+hay que aplicar el metodo switchMap de rxjs/operators de pipe al observable anterior  
+luego se desestructura los params y se obtiene el id
+y luego se llama al metodo getHeroePorId
+y se suscribe para obtener el heroe
+y el heroe que recibo va a ser igual al this.heroe de la propiedad
+
+y el heroe en el lado del html se le aplica el pipe json
+y deberia verse la info del heroe
+
+listo
+
+al presionar en leer mas , redirige a la pantalla del hereo en la url indicada el id 
+y se muestra el spinner y cuando se disponga de los datos del heroe por id se muestra los datos
+
+_________________
+
+DISEÑO PANTALLA HEROE
+
+tengo que trabajr en el ng-template porque ya tengo la informacion ahi
+y se muestra cuando tengo al info
+
+se crea un div fxLaout en una sola fila
+
+si la pantalla es muy pequeña se utiliza para mostrar la info en forma de columna
+
+para hacer una separacion de la columnas de 30px fxLayoutGap
+
+y las columnas que se van a mostrar en los div hay que agregarle el fxflex de la cantidad que 
+va a copar de la pantalla disponible
+
+en el primero se muestra entre h1 el superhero, alter_ego
+se agrega un componente mat-divider
+y la imgane usando el pipe para la imagen, si no se hubiera hecho el pipe imagen se tendria que 
+volver a hacer la logica para armar la url de la imagen
+
+en el h1 se usa el small para mostrar un texto mas pequeño 
+
+en el segundo div se agrega la otra informacion que se quiera mostrar
+
+y para hacer el resposive de la iamgen
+lo agrega en el styles para la imagenes solo del componente 
+y hace que ocupe el tañaño completo disponivle pero del div creado 
+
+y tambien para que tenga los bordes redondeados
+
+
+para el boton regresar 
+se inyecta el Router
+
+se define el metodo regresar
+para la navegacion e ir a la url heroes/listado
+
+para que se vea bien la separacion de las tarjetas
+en el css de del componente heroe tarjeta se define la clase para mostrar
+
+_________________
+
+VARIABLES DE ENTORNO
+
+para que la parte de la url comun 
+se defina de forma facil y sea mas facil desplegarlo despues porque no va a ser localhost
+
+en lso archivos
+enviroment.prod.ts 
+y enviroment.ts
+
+podemos definir variables para que esten disponibles en produccion y desarrollo respectivamente
+
+en el main.ts
+
+pregunta si el enviroment.produccion es true
+ejecuta la funcion enableProdMode que limpia varias cosas del build de la aplicacion
+
+eso ya hace angular internamente cuando genera ese build
+
+entonces se agrega en enviroment.ts para desarrollo 
+la variable baseUrl con el valor de la url base
+'http://localhost:3000'
+
+y en le de prod iria la que quedaria para prod ya no seria localhost
+base url en produccion
+
+en el service se llama a la variable base url del enviroments
+
+ver de cual lo trae, cuando se importa si el del de produccion hay que ver que lo traiga de .prod
+
+ return this.http.get<Heroe[]>(`${ this.baseUrl }/heroes`)
+
+con back tick para armar el string template
+
+ahora si necesitamos cambiar la url base
+directamente se tiene que cambiar en los enviroments.ts
+bajar el servidor y volver a levantar
 
