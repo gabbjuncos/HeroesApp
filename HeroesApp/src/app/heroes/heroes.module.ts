@@ -16,6 +16,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MaterialModule } from '../material/material.module';
 import { HeroeTarjetaComponent } from './components/heroe-tarjeta/heroe-tarjeta.component';
 import { ImagenPipe } from './pipes/imagen.pipe';
+import { FormsModule } from '@angular/forms';
+
 
 
 
@@ -35,7 +37,8 @@ import { ImagenPipe } from './pipes/imagen.pipe';
     FlexLayoutModule,
     MatSidenavModule,
     HeroesRoutingModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule
   ]
 })
 export class HeroesModule { }

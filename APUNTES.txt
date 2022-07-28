@@ -794,3 +794,201 @@ ahora si necesitamos cambiar la url base
 directamente se tiene que cambiar en los enviroments.ts
 bajar el servidor y volver a levantar
 
+__________________________
+
+
+AUTOCOMPLETE ANGULAR MATERIAL
+
+en los ejemplos de la doc se ve que se necesitan mas cosas importar que no estan explicitos 
+por ejemplo
+
+el mat-form-filed
+el mat-input para establecer los campos del input para que le extienda las configuraciones de estilos
+
+la linea [formControl] = "myControl" es propio de los formularios reactivos de angular
+falta ver los formCOntrol
+
+importar el angular autocomplete
+
+en la doc hay que importar el mat-form-field
+
+import {MatFormFieldModule} from '@angular/material/form-filed'
+
+y hay que exportarlo
+
+tambien hay que importar el material input
+
+import {MatInputModule} from '@angular/material/input'
+
+en el div para mostrar el contenido fxLayout en formato columna
+y puede ser tambien para mostrar en formato row
+
+se usa el mat-divider
+
+se borro lo de formularios reactivos
+
+en heroes module se agrega FormsModule, se lo importa
+y en el buscador se agrega ngModel pero con la caja de banana
+[(ngModel)] 
+
+se agrega la propiedad termino 
+y otra propiedad para la lista de heroes de tipo heroe
+que van a ser lo heores que se van a estar mostrando
+esos heroes son los que se van a mostrar en el ngfor de mat-option
+
+en el option
+es el objeto que se va a mostrar 
+como heroe.id para seleccionarlo , pero tambien se podria mandar como valor todo el objeto
+y todas las propiedades
+
+se puede ver el contenido de la propiedad termino al escribir en el buscador
+{{termino}}
+
+para obtener lo que se escribe ne la caja de texto
+se agrega en el input 
+(input)="buscando()"
+hay que definir ese metodo al argumento no hace falta mandarle el termino porque ya lo tengo 
+
+y en el buscador ts se agrega en el constructor el servicio
+
+y en el metodo buscando
+se llama a todos los heroes con el getHeroes
+y en el suscribe se recive lo pedido en heroes
+y se le dice que a la propiedad heroes del componente se le asinge los heroes
+recibidos
+
+por lo que en el buscador al escribir, se dispara el buscando y se carga el listado de con todos 
+los heroes
+y luego en el mat-complete se muestran esos heroes de la lsita cargada
+
+y si selecciono uno 
+me muestra [object Object] porque es la presentacion de un objeto, es lo mismo que pasa cuando se 
+hace objeto.tostring
+
+______________
+
+AUTOCOMPLETE SEGUNDA PARTE
+
+CUANDO SE SELECCIONA HAY QUE HACER OTRA PETICION PARA TRAER LA INFORMACION CORRESPONDIENTE
+
+en postman
+puedo hacer query para pedir algo determinado
+por ejemplo para hacer la sujerencia del buscador agregando el ?
+y postman lo toma como query
+
+http://localhost:3000/heroes?q=a y para limitar la cantidad que regrese le puede agregar una bandera
+con &
+
+http://localhost:3000/heroes?q=a&_limit=6
+
+se agrega un nuevo metodo para las sugerencias en el heroes service
+
+getSugerencia
+termino de busqueda es lo que la persona esta busqueda
+va a ser un arreglo que emite un arreglo de heroes
+
+ahora en el buscador ya no es el endpoint que tengo que llamar ahora es el metodo de sugerencia
+
+si coloco una b trae flas tambien porque en los datos que puede tener el obj flas hay alguno que contiene una b
+por eso pero si se escribe mas letras si hace el filtrado,
+
+ahora hay que saber cual heroe fue el seleccionado
+
+el mat-autocomplete tiene varios eventos
+entre parentesis significa que emite un evento y se usa el metodo para la opcion seleccionada
+y se le agrega un metodo opcionseleccionada que hay que definir en el buscar ts y se le pasa el event
+como parametro
+
+y para que en el metodo se pueda poner el tipado de lo que se pasa como parametro a este nuevo metodo
+se puede poner any y un console, y luego al ejecutarlo muestra lo que esta llegando 
+y de ahi se puede sacar el tipo en caso que se queira ponerlo
+
+y se tiene que importar MatAutocompleteSelectedEvent 
+
+se extrae lo de evnt en el metodo opcionSeleccionada
+const heroe = event.option.value
+
+pero si dejo el cursor encima de option se ve que es de tipo any
+porque este tipo deevento no sabe que tipo de info es la que esta dentro
+
+asi que podemos decirle que es de tipo heroe
+
+y al hacele el console se puede ver toda la info del heroe seleccionado
+
+y al termino si le asigno el heroe seleccionado lo muestra en el buscador
+
+luego lo que se hace es crear una propiedad heore seleccionado para obtener
+los datos mediante peticion http y se le pone ! para que type script permita 
+dejarlo vacio
+
+y se llama el getHeroePorId
+
+en el argumento del metodo se puede poner heroe.id!
+por las dudas type script se queje porque no esta asignado previamente
+asi que se agrega un ! para indicar que va haber un valor siempre
+
+y se lo muestra al obj en formator json en otro div
+
+lo que se muestra es de otra peticion getSeleccionado no del obj seleccionado
+
+_____________________
+
+AUTOCOMPLE CUANDO NO SE ENCONTRO NADA
+
+para que se expanda todo lo posible fxLayout="column" el buscador 
+
+
+para cuando no se encuentra un valor en el buscador y para mostrar el mensaje
+no se encontro nada con el termino {{termino}}
+
+y mandamos un valor "" para devolver
+y tambien se debe agregar *ngIf para controlar cuando se va a ver el mensaje por que 
+sino siempre va a salir 
+cuando el arreglo tengo loguitud cero se va a mostrar este mensaje
+
+en el metodo buscador se agrega el metodo trim para sacar los espacios en blanco
+
+pero si seleccionamos algo que no encuentra se rompe, hay que controlar ese valor 
+
+se puede ver que cuando no se seleccionada y se muestra el mensaje se puede  ver con el console
+que se envia un string vacio
+
+y con eso se agrega un if para retornar y no seguir con la ejecucion del metodo 
+buscando
+
+queda el problema que si le hago click y no se escribio nada , se muestra el mensaje que no se 
+encontro nada, para solucionar eso se agrega otra condicon en el ngif, que el  termino.length sea
+mayor a cero
+
+se agrega tambien que cuando el buscador no tenga nada seleccionado, no se muestre el contenido
+de la busqueda anterior
+y como se le va a setear el undefinid en caso que no haya nada 
+en la definicion del heroe seleccionado se le dice que puede ser undefinid
+
+seria cuando selecciono y lo borro y escribo otracosa que no existe
+queda en undenifdo entonces se borra el contenido
+
+y luego para que muestre la info de la tarjeta usando el el componente heroe tarjeta
+
+________________________
+
+RESUMEN DE LA SECCION
+
+angular material trabaja de la misma forma que con la que trabajamos con prime ng
+son varios modulos pero solo tomamos los que vamos a utilizar en la aplicacion
+se creo un modulo material donde se fue agregando cada modulo que se iba necesittando
+de angular materia, hay muchos pero es bastante eficiente, porque angualar no vuelve
+a cargar los modulos que ya estan cargados en memoria 
+ademas por ejemplo si no usamos el modulo de datepicker de material porque lo vamos a cargar
+los modulos ademas tienen otros modulos que angular maneja de forma automatica por nosotros
+
+por ejemplo el form filed y el input tienen modulos en comun pero como angular material tambien
+esta basado en modulos, entonces si se cargo un modulo de formfield que es el mismo de input
+entonces no lo vuelve a cargar 
+
+este modulo materia creado podria no estar y meter todos los modulos de material en el modulo
+de heroes pero eso haria que ese modulo cresca mucho o tambien de manera global en app module
+pero tambien creceria mucho
+por eso es mejor trabajar en moduelos
+ademas de esta forma permite trabajar usando lazy load , cargando los modulos adicionales
+de la aplicacion
