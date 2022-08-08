@@ -992,3 +992,135 @@ pero tambien creceria mucho
 por eso es mejor trabajar en moduelos
 ademas de esta forma permite trabajar usando lazy load , cargando los modulos adicionales
 de la aplicacion
+____________________________
+
+PANTALLA PARA AGREGAR HEROE
+
+
+FX LAYOUT para colocarlo en 2 columnas en la fila
+y fxlayoutGap para hacer una separacion de 40 pixels
+
+luego hago diz para tener 2 columnas con el mismo tamaño con el fxFlex
+
+para hacer el formulario tengo mat-form-field
+un titulo mat-label
+el input 
+y para decirle que angular materia le agregue el asterisco de requerido se agrega el required
+
+para que tome  todo el ancho del cambpo osea los 50 del fxflex de la primera columna
+con el fxFlex 100 con la separacion de los 40 pixels
+
+al div fxFlex 50 se le agrega el fxLayout = column para que salgan en fila la primera
+collumna si agrego otro campo
+
+para los campos  mat-form.field se le puede quitar la propiedad fxFlex 100 ya que 
+por que con el fxlayout column hace que ocupe en su totalidad la columna
+se deja uno de cada uno para ver que queda igual
+
+se hace que el campo super heroe y alter ego salgan en una fila
+creando un div y metiendolos ahi, y al div se le agrega la propiedad fxLayout="row"
+para que salga en una sola fila
+
+y se agrega el flexLayoutGap para dejar una distancia de 20 px entre los campos
+
+
+para usar el select de angular material
+
+Select
+
+mat-select es la pripeidad para usarlo
+y para las opciones se usa un mat-option
+
+se crean las opciones en el componente agregar como propiedad
+y se lo crea como lista
+
+se puede asociar el valor seleccionado
+ con [value] y se le asigna el id del obj
+es una forma especial de asignar la opcion seleccionado de material
+
+se coloca otro mat-form para la foto por url
+
+el type si se lo pone como url se lo veria de otra manera desde un celular
+
+se agrega al componente la proiedad heroe tambien para setearel los valores que 
+vamos a agregar
+
+va a dar error por que hay que definirle todos 
+
+los publisher es una obj enum del heroe interface asi que hay que importarlo
+asi que en la definicion del agregar hay que importar a ese obj
+ y se le da uno por defecto dc comic
+
+y se agrega el boton guardar
+
+button mat-raised-button
+
+se le agrega un icono con mat-icon edit
+
+en la iterfaz ver que el ide este como id? opcional
+para que en el componente de donde lo llame no me marque error por obligarme a ponerlo
+
+
+-------------------------
+
+
+INSERCION A LA BASE DE DATOS
+
+se le agrega el responsive
+para cuando estamos en una pantalla muy pequeña 
+con la propiedad fxLayout.xs = "column" a todo el div
+
+y a la del al mat-form-field 
+del super heroe y alter ego
+porque estan en la misma fila
+
+y para la imagen tambien
+del div mas general de todos la del fxLayoutGap 40px
+
+se agrega en el imput para asociarlo en 
+[(ngModel)] = "heroe.superhero"
+y ase lo agrega en el small del titulo
+
+para que a medida que se esciba en el input del super heroe
+se vea en el titulo
+
+le da valor al atributo superhero de la propiedad hereo de componente agregar
+y se lo asociada a cada uno de los cambios
+
+se agrega [(ngModel)]="heroe.atributo"
+para cada campo
+
+y al boton se le agrega un evento que hay que definir en el componente agregar
+no hace falta mandarle ningu argumento porque lo tengo asociado a la propiedad 
+heroe del componente
+
+de esta forma es facil de asociar los cambios al documento
+se hace una validacion simple haciendo trim de la cantida de elementos
+del nombre del heroe
+que tiene que ser distinto de cero, solamente para el nombre 
+
+
+para practicar la peticion post
+se puede hacer en el postman
+
+seleccionando en el body
+x-www-form.urlencoded o como raw en formato json
+
+y se le agrega todos los atributos que necesita para ese obj 
+
+se le hace la peticion post al endpoint respectivo
+
+se crea un metodo en el servicio heroes agregarHeroe
+recibe un heroe y devuelve un observavle del tipo heroe
+y va a emitir el heroe con su id
+
+y le tengo que decir que es un post que va a regresar un heroe que va a emitir un heroe
+post<Heroe>
+
+se injecta el servicio al constructor del agregar component
+
+y luego de la validacion simpre llamo al service paso al heroe
+y para que se dispare tengo que poner el suscribe
+
+podemos ver en la respuesta por el console que vino del backend porque el id que muestra
+no se genero
