@@ -169,12 +169,21 @@
     },
     {
       "superhero": "gabriel",
-      "alter_ego": "",
-      "characters": "",
-      "first_appearance": "",
+      "alter_ego": "Gabiman",
+      "characters": "Gabriel",
+      "first_appearance": "comic 1",
       "publisher": "DC Comics",
-      "alt_img": "",
+      "alt_img": "https://media.revistagq.com/photos/625d21fb2a45a743c11f080c/16:9/w_1280,c_limit/ZFOEOAU3YZHBFDWFWKSX3T7VJM.jpg",
       "id": "XVHW6gT"
+    },
+    {
+      "superhero": "rob",
+      "alter_ego": "rob",
+      "characters": "robines",
+      "first_appearance": "comic 2",
+      "publisher": "DC Comics",
+      "alt_img": "https://culturageek.com.ar/wp-content/uploads/2017/12/Robin-www.culturageek.com_.ar_.jpg",
+      "id": "T2JScSf"
     }
   ]
 }

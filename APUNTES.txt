@@ -1124,3 +1124,164 @@ y para que se dispare tengo que poner el suscribe
 
 podemos ver en la respuesta por el console que vino del backend porque el id que muestra
 no se genero
+
+__________________________
+
+como para el editar es el mismo para agregar
+
+hay que tomar los parametros de la url
+
+cuando se ingrese por editar devuelve el id en el consolo
+
+cuando sea agregar devuelve undefined
+
+me deberia dar una bandera para saber si necesito editar o crear
+
+si tengo un id significa que estoy editando
+
+se obtiene en el agregar  component el parametro de la url
+en el ngOnInit
+
+se importan los operadores de rxjs
+
+se inyecta el ActivatedRoute en el constructor
+
+desestructurar el id con el switchMap
+
+retorna un observable que retorna un id
+
+y en el suscribe diho que la propiedad heroe va a ser igual al heore que se obtiene
+luego como el heroe esta asociado a los campos del ng model
+va a mostrar los campos
+
+pero podemos saber ya que si tenemos un id , estamos editnado
+y si es undefined estamos agregando
+
+se agrega el metodo para actualzar en service heroes
+que va a retornar un observable que emite un heroe
+con metodo put
+
+y se arma la url correspondiente para la edicion del heroe
+y en el else se agrega lo del metodo para agregar
+
+pero podria se un solo metodo que se encargue de editar o agregar
+
+para actualizar se usa el put o el patch
+
+cuando se agregue tendriamos que navegar a otro lugar
+
+para eso se importa el router y se inyecta
+y se navega con el router nvaigate
+
+cuando se agrega un nuevo heroe, al precionar guardar se lo agrega y navega a la pagina
+de editar de la pagina del heroe correspondiente
+
+________________________
+
+Excepciones en nuestro ImagenPipe
+
+se agrega un estilo por las imagenes grandes en el styles de agregar components
+
+sino en el css tambien podria ser
+
+se ingresa al imagen.pipe
+
+si no hay heroe id se devuelve la imagen que es para 
+mostrar que no se cargo imagen, la personita 
+y se pone la direccion de esa imagen
+
+se mostraria esta imagen cuando se ingresa para agregar un nuevo 
+heroe
+
+vamos a una imagen de google, segundo click y sacamos la url de la imagen
+copy adress
+
+de esta forma se agrega una nueva condicino para el caso en que se 
+tenga una url
+si tiene heroe.alt_img, la devuelve
+
+tener en cuenta que si la url de la imagen deja de existir se rompe
+
+simplemente se pasa la url de la imagen 
+y el pipe la va a devolver
+
+hay un error 
+
+en el ngOnInit siempre manda a llamar 
+para obtener el id del param pero cuando es agregar,
+no tenemos id entonces da un undefined, 
+
+se puede hacer que se muestre por pantalla la url en la que estoy
+y la logica seria, si no se encuentra en la url la palabra editar que retorne
+solamennte pero que no devuelva nada porque seria un undefined y daria error
+
+en caso que sea editar, que retorne el id
+
+
+_________________________
+
+ELIMINAR REGISTROS
+
+para el borrado en el heroe service, solamente hace falta pasar el id
+y se llama al delte, y lo que retorne no seria del tipo heroe sino de tipo 
+any
+
+se agrega el boton en el agregar html
+
+para agregar un espacio entre los botones
+podemos usar la clase de style css que se creo hace bastante
+
+y se la llama en un div en la definicion de los botones en el html
+
+  <span class="spacer"></span>
+
+y hay que agregarle en el div la clase flexlayout, la que contiene los botones
+
+ahora el boton deberia solo aparecer si se esta actualizando por que no puede 
+borrar algo que tiene un id
+
+agrego el metodo para borrar en el agregar component
+
+no hace falta pasarle ningun id desde el html porque 
+ya el id esta en la propiedad heroe, ya que si es editar se carga esa propiedad con
+esos datos
+
+puede marcarme type script que en el this.heroe.id da lugar a uqe sea undefined
+asi que ñe agrego ! para decrile a type script que confie que siempre va a tener un valor
+
+y para que se dispare aplico el suscribe
+
+u cuando se borre reenviar a otra ruta la del listado de heroes
+
+________________
+
+pipes puro e impuros
+
+si se cambia de imagen y se da el guardar, no se actualiza la imagen
+hay regfrescar para ver que se cambio
+
+sucede eso por el pipe
+
+se dispara 2 veces al cargar la pagina
+la primera vez es porque el heroe no tiene cargado el id ni el alter_igo
+
+ademas cuando se cambia de url de la foto y se da en guardar no se ejecuta el pipe
+
+y se agrega la propiedad pure en el decorador
+y se dice que es puro el pipe cuando se invoque el transform 
+cada vez que el argumento cambia
+
+pero aca no estaria cambiando porque aunque  cambie una propiedad del objeto sigue
+siendo el mismo objeto apunta al mismo espacio de memoria
+por eso no se vuelve a disparar
+
+si lo ponemos en false se vuelve a ejecutar cuando se detecte un cambio en algun paso
+del ciclo de deteccion de cambios
+
+cada vez que haga un cambio se va a disparar 
+cuando se renderiza, cuando se cambia la imagen, etc, en cada paso en detalle 
+
+esa es la diferencia entre pipes puros e impuros
+
+pero no se lo pone al final asi no se dispara tantas veces 
+solo se actualiza cuando se de en refrescar y guardar
