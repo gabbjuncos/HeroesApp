@@ -1285,3 +1285,184 @@ esa es la diferencia entre pipes puros e impuros
 
 pero no se lo pone al final asi no se dispara tantas veces 
 solo se actualiza cuando se de en refrescar y guardar
+
+
+______________________________
+
+material snackbar
+
+para indicar al usuario cuando se realizo el proceso de grabacion
+
+importamos la api al modulo material creado y lo exportamos
+
+en los ejemplos, en la parte de ts podemos ver que se inyecta en el constructor
+el _snackBar es para que visualmente se vea que es una propiedad privada
+pero no es necesario
+
+asi que lo inyectamos en el agregar component
+
+se crear el metodo mostrarSnakbar
+y para abrir el snackBar es con open y se pasan 2 parametros
+en mensaje y el nombre del boton de la accion y en {}
+se coloca parametros como por ejemplo la duracion del snackbar
+por ejemplo 2500 milisegundos
+
+y se puede agregar este metodo en el suscribre donde se realiza la actualizacion
+
+________________________
+
+material dialog
+
+para que muestre un mensaje de si esta seguro que quiere borrar un registro
+
+hay que inyectar el servicio de matdialog para usarlo en el metodo borrar
+en el ts agregar
+
+para llamar al dialog con open, hay que llamar un componente osea crearlo
+pero en la doc de angular material lo que haces es crearlo con html
+entonces hay que crear el nuevo componente para mostrar en la caja de dialogo
+
+se lo crea al componente nuevo en la carpeta components anteriomente creada
+ ng g c heroes/components/confirmar
+
+hay que ver que lo importe el heroes module creado ConfirmarComponent
+
+como segundo parametro le podemos mandar un obj en {}
+para la configuracion de la ventana
+
+en el html de confirmar se agregan los botones
+
+para cerrar la ventana del dialog 
+
+hay que inyectar el servico para hacer referencia al dialog, le tengo que especificar de 
+que tipo es y es de confirmar component
+
+en el confirmar ts
+
+y creamos el metodo cerrar para hacer el close del dialog
+
+parael caso del si borrar , seria la misma linea, pero le podemos pasar un true
+como parametro para poder recibir y saber lo que se quiere hacer
+
+luego sigue programar el borrado
+
+_______________________________________________________________________
+
+INFORMACION DESDE Y HACIA EL DIALOG
+
+en el segundo parametro, el obj para mandar
+en data se puede pasar un parametro y se puede mandar en data objetos tambien
+en java script los obj son pasados por referencia y se mandara el obj 
+heroe puede ser que el componente se modifique y no queremos mandar
+el obj modificados, el dialog deberia ser solo lectura
+
+con el operador spread ...this.heroe nos aseguramos que nada cambie
+
+pero en este caso, como es seguro que no va a cambiar nada, lo pasa al obj sin spread
+
+para leer la data que viene desde el padre en el dialog se debe inyectar otro servicio
+DialogData
+es un decorador asi que hay que resolver eso
+se importa el Inject en angular/core
+
+es el que usa los servicios para ser injectados
+
+y tambien hay que importar MAT_DIALOG_DATA
+
+y en DialogData se cambia por lo que se envia el Heroe
+y se debe importar la interfaz Heroe
+
+lo que estamos haciendo en esa linea del tipo Heroe
+@Inject(MAT_DIALOG_DATA) public data: Heroe
+
+es leer lo que quien sea que llame el dialogo y la la informacon va a ser almacenada en la propiedad data
+y esa data se que va a ser del tipo Heroe
+
+al precionar en borrar ya el obj heroe se encuenta en el correspondiente componente
+en el componente confirmar
+como es publica esa data la puedo usar en el html, si fuera publica no se podria
+
+se lo asigna a la const dialog a todo el dialog
+
+al dialog se lo cierra dialog.afterClosed()
+
+cuando se cierra se puede ver que devuelve un observable
+se agrega el suscribe
+
+y si lo que se recibe es un true porque se preciono en borrar se borra
+y si se da en cancelar se recibe un false y si se hace click afuera se recibe un undefined
+
+el suscribe depende de otro valor que es un suscribre lo que se podria usar 
+un switchmap
+
+_____________________________________
+
+ADECUAR LOS TEXTOS DE LA PANTALLA DE AGREGAR
+
+para cambiar los textos, en la pantalla para editar deberia salir el titulo
+editar
+
+en el html se agrega span y si se tiene el heroe id es true entonces es editar
+y si no se tiene heroe id es Nuevo
+
+<h1>
+    <span *ngIf="heroe.id">Editar</span>
+    <span *ngIf="!heroe.id">Nuevo</span>
+    Heroe
+    <small>{{ heroe.superhero}}</small>
+</h1>
+
+
+otra forma de hacerlo es usando ternario
+si existe heroe.id devuelve 'editar' sino devuelve 'nuevo'
+
+y se puede poner tambien para el boton guardar
+el ternario  para cambiarel nombre y poner guardar y editar
+{{ (heroe.id)? 'Actualizar': 'Crear' }}
+en el html
+si hay id que el boton se llame es actualizar y sino Crear
+
+
+______________________________
+
+SECCION 15
+
+se utiliza un GAR para proteger rutas, es una clase de angular 
+en la que se ejecuta un metodo y se fija si la persona puede ver la ruta
+en caso que peuda devuelve un true
+
+y si devuelve un false, no se debe mostrar la ruta y ni siquiera 
+se va a ejecutar el constructor de la ruta y eso va a hacer que no se 
+carguen modulos y ni que se activen
+
+__________________
+
+PANTALLA DE LOGIN BASICO
+
+tenemos que importar en auth-mouduel lo de material module para usar los componentes de material que llamamos ahi
+obj proteccion de rutas, no es especificamente esto para hacer el login
+
+en pages/login ver el ts
+
+en el html de login 
+se  crear una grilla usando el mat-grid-list, se debe indicar el numero de columnas
+
+en el ts se define el metodo login para cuando se toque el boton ingresar , se ejecute
+
+se debe inyectar el Router en el ts
+this.router.navigate(['./heroes'])
+
+luego en el home componete html
+en el boton log out se le agrega el metodo logout
+que hay que definir
+se inyecta el componente Router
+
+y en el metodo logout se hace que navegue a la path auth
+listo
+
+ahora hay que hacer una proteccion por url 
+ya que si se conoce la url se puede acceder directamente
+hay que hacer que no deje entrar a nadie si no se entro
+por el componente auth
+____________________________________________________
+

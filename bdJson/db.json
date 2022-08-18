@@ -96,14 +96,6 @@
       "characters": "Peter Parker"
     },
     {
-      "id": "marvel-captain",
-      "superhero": "Captain America",
-      "publisher": "Marvel Comics",
-      "alter_ego": "Steve Rogers",
-      "first_appearance": "Captain America Comics #1",
-      "characters": "Steve Rogers"
-    },
-    {
       "id": "marvel-iron",
       "superhero": "Iron Man",
       "publisher": "Marvel Comics",
@@ -184,6 +176,15 @@
       "publisher": "DC Comics",
       "alt_img": "https://culturageek.com.ar/wp-content/uploads/2017/12/Robin-www.culturageek.com_.ar_.jpg",
       "id": "T2JScSf"
+    },
+    {
+      "superhero": "Super Girl",
+      "alter_ego": "carol",
+      "characters": "ni idea",
+      "first_appearance": "comic 5",
+      "publisher": "DC Comics",
+      "alt_img": "https://syfyomniverse.files.wordpress.com/2020/01/supergirl-comics.jpg",
+      "id": "Oa4fqXM"
     }
   ]
 }
