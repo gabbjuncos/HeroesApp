@@ -1466,3 +1466,210 @@ hay que hacer que no deje entrar a nadie si no se entro
 por el componente auth
 ____________________________________________________
 
+AUTHSERVICE - SERVICIO PARA MANTENER ESTADO DE LA AUTENTICACION
+EN BASE A PROYECCION DE RUTAS NOMAS
+
+se crea el servicio para la auth
+ng g s auth/services/auth --skipTests
+
+en los environment se utiliza la base de la url
+
+ver que se importe del environment normal /enviroment
+
+en auth service
+se crea el metodo log in que lleva a la utl de log in 
+
+y en el componente de log in ts
+
+hay que inyectar el servicio en el constructor
+
+se agrega en la carpeta auth , la carpeta interfaces y se agrega la interface
+auth , auth.interface.ts
+es para el tipado
+
+y ahora podemos decir en el login() de auth que el get retorna un tipo Auth
+hay que importar el Auth
+
+desde /auth/login 
+si se hace click en ingresar estamos consultado en la funcion por un id de usuairo
+/usuarios/1
+si existe deja pasar al listado de heroes
+sino existe /usuarios/12 y como es uno de los no registrados
+te muestra un mensaje de error
+
+
+___________________________
+
+MOSTRAR LA INFORMACION DEL USUARIO ACTIVO
+
+se crea la propiedad _auth en el auth service de tipo Auth que puede ser null por lo que se le agrega | undefined
+para la info del usuario
+
+y una vez que se pase por el login se quiere guardar la info del usuario en _auth
+
+se usa el pip operador del rxjs, tap
+para que antes del suscribe del login, se ejecuta el tap, el tap es para crear
+procesos secuandarios
+con el tap se recibe la respuesta y se la muestra y se lo almacena en el _auth
+
+como la propiedad _auth es privada se crea el metodo get
+y se le agrega el operador {...} para desesctructuralo y asegurme que no se va a 
+cambiar por alguna manera
+
+como este auth esta proveido en el root, se va a poder acceder de cualquier parte 
+desde otro modulo
+
+en el home html se quiere mostra el nombre del usuario
+
+en el home ts se inyecta el servico de auth
+la instefacer no hace falta inyectarlas en ningun lugar ya que es solo de tipado
+
+y en la propiedad le vamos a decir que siempre deberiamos tener un valor ahi auth!
+pero en una instancia va a estar como undefined
+
+el auth se va a llamar con la info del auth service
+para eso vamos a crear un metodo para get 
+
+y en el service se coloca en el get el tipo de lo que se devuelve
+que es del tipo Auth y se le dice en ese metodo que siempre va a tener un valor
+
+y en el home html se agrega ese auth.usuario para mostrar es valor que 
+devuelver el service
+
+si se va desde el home al listado de heroes, se muestra el nombre 
+correspondiente, pero al recargar esa pagina, se va ese valorporque esta en memoria
+solamente, se vuelve a inicializar el servicio y en esa propiedad no tiene
+nada
+
+__________________
+
+ANGULAR GUARDS- CANLOAD
+
+cuando de iniciar sesion a listado de heroes si es un usuario con id valido
+me muestra el nombre del usuario todo bien
+pero si recargo esa pagina lo pierde porque el service se vuelve a cargar 
+y ya no lo tiene a ese dato por lo que se tendria que sacar al usuario de la sesion
+
+se usan los guards para implementar reglas de validaciones en las rutas
+
+va a ser otro servicio 
+
+en las rutas de app-routing.module
+la ruta auth no se deberia ni cargar ni activar, si el usuario no esta
+autenticado, y para saber que el usuario esta autenticado es porque
+el _auth service es distinto de undefined
+
+angular cli lo genera al archivo ese, pero nada mas es otro servicio que se llama de otra forma
+y se lo crea en otro carpeta de auth llamada guards
+
+ng g guard auth/guards/auth
+
+y hay que seleccionar que metodo quiero implementar 
+
+se selecciona el canActivate y el canLoad
+
+el canActivate se comenta por el momento
+
+y se activa el canLoad, es para ver si puede cargar algun modulo
+devuelve un observable , una promesa o un boolean
+se quitan los treeurl
+
+y como se comento el canActiva se lo saca del export para que no marque error
+por defecto el canLoad devuelve un true, en otras palabras deja a pasar a cualquiera
+
+y hay que inyectar el servicio en app-routing-module
+y la idea es hacer que no se muestra la ruta si no esta autenticado
+y se le agrega a la ruta heroes
+el canLoad y ver que guard se pueden agregar ahi en forma de arreglo
+
+y se llama al AuthGuard
+se llama el guard y se va a sevisar que este implementado en canLoad
+y lo va a ejecutar cuando alguien intente cargar el modulo para la path heroes
+y la el listado tampoco se mostraria porque es hija de heroes
+
+y por consola va  mostrar los datos que quiero mostrar en el console.log
+que es el el true y la path que quiere cargar y los segmentos heroes y listado
+
+si le pongo un false en el retorno
+y quiero acceder desde 
+/heroes
+/heroes/listado , se queda en blanco la pagina porque no se pasa
+por auth/heroes
+
+pero si se pasa por auth/heroes el canload tiene que devolver un true
+
+queda en blanco porque la bloquea el guard
+
+ahora para saber como manejar el tema este 
+en auth.guard se agrega el servicio
+inyectandolo se puede utilizar cualquier cosa del servicio auth
+
+y se pregunta si el auth tiene id quedevuelve el true entonces que lo deje pasar 
+
+el canLoad es para prevenir al usuario cargue el modulo
+como lo que se va hacer ahora es usar el local store para recordar los datos
+del usuario cuando se ingresa, si el usuario ya ingreso alguna vez, se va a poder 
+acceder
+
+el can load hace eso, si puede cargar el modulo , no si puede activar la ruta
+
+por eso  se agrega el boton ingresar sin loging  porque siempre se va recordar
+los datos del usuario en el storage del nagevagdor cuando alguna vez se accedio
+
+en el componente login html
+
+y ese boton me va a permitir navegar a la ruta heroes y voy a poder acceder si 
+alguna vez se ingreso por log in 
+
+se crear en el auth service el metodo log out para purgar el obj auth, colocarlo en undefined
+
+y se crea el metodo logout en el auth service, para poner en undefined la propeidad _auth
+y el metodo ingresarSinLogin 
+por el momento lo pone al usuario en undefined pero te deja ingresar a heroes
+porque ya en algun momento se ingreso entonces los datos quedaron guardados en el storage
+pero como el auth esta en undefinide no se saben los datos del usuario y no se 
+muestra el nombre
+
+falta configurar el CanActivate
+
+_____________________
+CAN ACTIVATE
+
+se descomenta el canActivate 
+y se agrega la exportacion en el implemente del auth guard
+
+el routerSateSnapShot es el estado actual
+el urlTree se saca de cada cosa que devuelve 
+y se copia y pega el if del canLoad
+
+ahora la ruta del path heroes app-routing.module es la que tengo que prevenir 
+con el canActivate y canLoad 
+y se ejecutan los guard de manera secuencial
+
+en la lista se pone el componente que va a implementar ese can load y activate
+
+ahora si le doy en ingresa y logout , si le voy en ingresar sin login ya la pesona no puede ingresar sin haberse logueado
+si pruebo entrar por el listado de la url tambien me lo bloquea por el cantload
+y muestra pantalla en blanco
+
+hasta aca es lo que hace el canActive y load para proteger rutas
+
+pero en la mayoria de las app no todo el tiempo te tenes que estar loguaendo
+asi que para simular por el momento el tema del token
+vamosa guardar el id del usuario en el local storage por el momento
+
+F12 aplication y borramos lo que  tenga el local storage
+en almacenamiento local ver que no haya nada
+
+vamos al auth service, en el momento del login
+se agrea otro tap
+el tap recibe el producto del tap anterior
+y se agrega en el local store
+localStorage.setItem('id', auth.id)
+
+de esta forma se guarda cuando se inicia sesion el id
+
+pero falta que si el id esta guarddo se pueda ir al listado sin tener que 
+pasar por el logueado y cuando se de en logout se borre ese id
+
+
