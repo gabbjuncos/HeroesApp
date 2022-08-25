@@ -1672,4 +1672,83 @@ de esta forma se guarda cuando se inicia sesion el id
 pero falta que si el id esta guarddo se pueda ir al listado sin tener que 
 pasar por el logueado y cuando se de en logout se borre ese id
 
+__________________________
 
+MATENER LA SESION DE USUARIO
+el id que guardamos en el storage podria ser tranquilamente el json web token
+
+en el guard
+para el caso en el que todavia el id este en el storage
+si esta activo se carga la informacion previamente, se hace la peticion de login 
+nuevamente y si el backend responden correctamente, lo va a dejar pasar 
+
+en auth service se define el metodo para verificar el estado de la autenticacion
+va a devolver un observable que emite un valor booleano
+
+en ese metodo lo uqe hace es ver en el local storage si esta el token o id
+si esta significa que esta autenticado, sino esta significa que no esta autenticado y no
+puede entrar a esa ruta
+
+la respuesta que va a devolver es un false pero se hacer que se devuelve un observable
+con el argumento que le ponemos 
+importando el of en rxjs, que convierte a un observable a partir del argumento que 
+le mandemos
+
+tambien se podria hacer que devuelva un boolean nomas en vez de un observable false
+en caso que haya un token en el storage seria un true, pero hay que ver que sea el id
+correspondiente al de la ruta
+porque lo que hay que hacer una peticion get
+y como devuelve un observable con los elementos de auth
+hay que hacerlo pasar por el pipe para poder transformar el observable 
+a otro valor usando el operador map
+y se hace una funcion de flecha que devuelva le true
+
+luego se llama en el guard del can load
+se deja solo esa linea en el active y load
+
+hasta ahi si hay token guardado en el storage, deja pasar al listado de heroes
+pero sin el nombre de usuario activo
+
+y si no hay token en el storage, queda la pantalla blanca
+se agrega el router en el auth guard para navegar al login cuando no hay id token y 
+no quede en blanco
+
+y en el auth service se agrega el of del from rxjs
+
+y se usa el of para transformar el observable en un false
+y en el guard
+con el pipe se usa el tap para hacer una funcion de flecha
+para si es falso lo que devulve
+navegue a la ruta de login
+esto en el can activate y lo mismo para el can load
+
+porque uno de los 2 es el que se va a ejecutar primero siempre
+
+si no tengo nada en el storage
+y quiero hacer click a ingresar sin login, no me lleva a ningun lado
+y si quiero entrar diecto al listado heroes/listado
+me lleva a login, con ninguna ruta por heroes me deja entrar va directo a login
+
+pero falta recordar la informacion del usuario porque la pierdo
+y solo hay que asignarselo al this.auth de service
+
+si se usa el lazyload
+se recomienda usar el canLoad tambien
+
+sino usamos lazyload, con el can activate es suficiente
+
+
+_________________
+
+seccion 16
+FORMULARIOS POR TEMPLATE toda la logica del formulario o la mayoria
+se encuentra en el html, los inputs del html angular va  inferir esos valores
+de forma automatico o la mayor parte 
+y se tambien se hacen validaciones de forma robusta en el html directamente, usando 
+directivas
+
+y tambien tenemos FORMULARIOS REACTIVOS
+recomienda usar estos porque dan mas control y es mas facil implementar validaciones
+que la aprox por template
+los formularios por template tambien lo pueden hacer pero al ser tan simple, hace que 
+las validaciones personalizadas se mas complicado hacerlo
